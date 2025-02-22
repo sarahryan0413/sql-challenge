@@ -1,44 +1,63 @@
---Drop table if exists
-DROP TABLE departments;
-DROP TABLE dept_emp;
-DROP TABLE dept_manager;
-DROP TABLE employees;
-DROP TABLE salaries;
-DROP TABLE titles;
-
 --Import and inspect the CSV files
-CREATE TABLE departments(         --table with dept numbers and names
-	dept_no CHAR(4),              --d001, d002, etc.
-	dept_name VARCHAR(20)         --Marketing, Finance, etc.
+CREATE TABLE "titles"(                               --table with staff titles and title id numbers
+	"title_id" CHAR(5) NOT NULL,                     --s0001, e0002, m0001, etc. 
+	"title" VARCHAR(20) NOT NULL,                    --Staff, Manager, etc.
+	CONSTRAINT "pk_titles" PRIMARY KEY("title_id")   --PK ensures title_id is unique and cannot be null
 );
 
---CSV not importing??????
-CREATE TABLE dept_emp(            --table with dept numbers and employee numbers
-	dept_no CHAR(4),              --d005, d007, etc.
-	emp_no VARCHAR(10)            --10001 to 499999
+CREATE TABLE "employees"(                            --table with employee demographics 
+	"emp_no" INT NOT NULL,                           --473302, 475053, 57444, etc.
+	"emp_title_id" CHAR(5) NOT NULL,                 --s0001, e0002, etc. (repeats) 
+	"birth_date" DATE NOT NULL,                      --7/25/1953, etc.
+	"first_name" VARCHAR(20) NOT NULL,               --Hideyuki, Byong, etc.
+	"last_name" VARCHAR(20) NOT NULL,                --Zallocco, Delgrande, etc.
+	"sex" CHAR(1) NOT NULL,                          --M/F/I
+	"hire_date" DATE NOT NULL,                       --4/28/1990, etc.
+	CONSTRAINT "pk_employees" PRIMARY KEY("emp_no")  --PK ensures emp_no is unique and cannot be null
 );
 
-CREATE TABLE dept_manager(        --table with dept numbers and manager employee number
-	dept_no CHAR(4),              --d001, d002, etc.
-	emp_no CHAR(6)                --110022 to 111939
+CREATE TABLE "departments"(                             --table with dept numbers and names
+	"dept_no" CHAR(4) NOT NULL,                         --d001, d002, etc.
+	"dept_name" VARCHAR(20) NOT NULL,                   --Marketing, Finance, etc.
+	CONSTRAINT "pk_departments" PRIMARY KEY("dept_no")  --PK ensures dept_no is unique and cannot be null
 );
 
-CREATE TABLE employees(           --table with employee demographics 
-	emp_no VARCHAR(10),           --473302, 475053, 57444, etc.
-	emp_title_id CHAR(5),         --s0001, e0002, etc. (repeats) 
-	birth_date DATE,              --7/25/1953, etc.
-	first_name VARCHAR(20),       --Hideyuki, Byong, etc.
-	last_name VARCHAR(20),        --Zallocco, Delgrande, etc.
-	sex CHAR(1),                  --M/F
-	hire_date DATE                --4/28/1990
+CREATE TABLE "dept_emp"(                                       --table with dept numbers and employee numbers
+	"emp_no" INT NOT NULL,                                     --10001 to 499999
+	"dept_no" CHAR(4) NOT NULL,                                --d005, d007, etc.
+	CONSTRAINT "pk_dept_emp" PRIMARY KEY("emp_no", "dept_no")  --composite key
 );
 
-CREATE TABLE salaries(             --table with employee number and salary
-	emp_no VARCHAR(10),            --10001 to 499999
-	salary INT                     --60117, 100715, etc.
+CREATE TABLE "dept_manager"(                                       --table with dept numbers and manager employee number
+	"dept_no" CHAR(4) NOT NULL,                                    --d001, d002, etc.
+	"emp_no" VARCHAR(10) NOT NULL,                                 --110022 to 111939
+	CONSTRAINT "pk_dept_manager" PRIMARY KEY("dept_no", "emp_no")  --composite key
 );
 
-CREATE TABLE titles(               --table with title id and job title
-	title_id CHAR(5),                     --s0001, e0002, m0001, etc. 
-	title VARCHAR(20)              --Staff, Manager, etc.
+CREATE TABLE "salaries"(                            --table with employee number and salary
+	"emp_no" VARCHAR(10) NOT NULL,                  --10001 to 499999
+	"salary" INT NOT NULL,                          --60117, 100715, etc.
+	CONSTRAINT "pk_salaries" PRIMARY KEY("emp_no")  --PK ensures emp_no is unique and cannot be null  
 );
+
+--Add foreign key restraint - refer to another table for data integrity
+ALTER TABLE "employees" ADD CONSTRAINT "fk_employees_emp_title_id" FOREIGN KEY("emp_title_id")
+REFERENCES "titles" ("title_id");
+
+ALTER TABLE "dept_emp" ADD CONSTRAINT "fk_dept_emp_emp_no" FOREIGN KEY("emp_no")
+REFERENCES "departments" ("dept_no");
+
+ALTER TABLE "dept_emp" ADD CONSTRAINT "fk_dept_emp_dept_no" FOREIGN KEY("dept_no")
+REFERENCES "employees" ("emp_no");
+
+ALTER TABLE "dept_manager" ADD CONSTRAINT "fk_dept_manager_dept_no" FOREIGN KEY("dept_no")
+REFERENCES "departments" ("dept_no");
+
+ALTER TABLE "dept_manager" ADD CONSTRAINT "fk_dept_manager_emp_no" FOREIGN KEY("emp_no")
+REFERENCES "employees" ("emp_no");
+
+ALTER TABLE "salaries" ADD CONSTRAINT "fk_salaries_emp_no" FOREIGN KEY("emp_no")
+REFERENCES "employees" ("emp_no");
+
+
+
