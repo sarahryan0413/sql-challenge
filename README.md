@@ -1,35 +1,29 @@
----
-Module 9 Challenge
----
-### Background
+# 📊 SQL Challenge: Pewlett Hackard Employee Database
+## Background
+Welcome to Pewlett Hackard! It’s been two weeks since I joined as a data engineer, and my first big assignment is a deep dive into employee records from the 1980s and 1990s. The challenge? All that remains of the old database are six CSV files. My mission: design a relational database, import the data, and analyze key employee trends using SQL.
+## 🏗️ Data Modeling
+Before diving into SQL, I used QuickDBD to sketch out an Entity Relationship Diagram (ERD), mapping out how all the data connects. The database consists of:
+- titles – Job titles over time
+- employees – Employee details (name, birth date, hire date, etc.)
+- departments – Department names and IDs
+- dept_emp – Employee-department assignments
+- dept_manager – Department managers
+- salaries – Employee salary history
+## ⚙️ Data Engineering
+With the database structure mapped out, I created SQL tables with:
+- Primary & Foreign Keys to maintain relationships
+- Data Constraints (e.g., NOT NULL) to ensure data integrity
+- Optimized Column Types for efficiency
+Once the schema was ready, I imported the CSV data into the corresponding tables.
+## 🔍 Data Analysis
+With the data in place, I wrote SQL queries to uncover insights, including:
+- Employee details (ID, name, salary)
+- Employees hired in 1986
+- Department managers and their departments
+- Employees by department (Sales, Development, etc.)
+- Employees with specific name patterns (e.g., "Hercules B.")
+- Most common last names in the company
+  
+This project was a great hands-on experience in data modeling, engineering, and SQL querying. Check out the repository for the full analysis and SQL scripts!
 
-This project involves designing and implementing a relational database for a fictional company, Pewlett Hackard, and performing various data analysis tasks using SQL. The goal is to model the company's employee data and perform queries to retrieve specific insights related to the employees, their departments, and salaries.
-
-#### Data Modeling
-
-Utilized QuickDBD website to create the ERD and initial tables.
-
-This section includes the schema of the tables created in the database:
-- titles: Contains information about employee titles.
-- employees: Stores employee demographic data such as names, birth date, hire date, and sex.
-- departments: Contains department numbers and department names.
-- dept_emp: Stores the mapping of employees to departments.
-- dept_manager: Stores information about department managers.
-- salaries: Stores employee salary information.
-
-#### Data Engineering
-
-The database includes several key data engineering tasks:
-- Table Creation: SQL commands to create the tables with appropriate column types, constraints, and primary/foreign key relationships.
-- Foreign Key Relationships: All necessary tables are connected via foreign keys to maintain data integrity.
-- Constraints: Not null constraints and appropriate column sizes have been applied to ensure consistency in the database.
-
-#### Data Analysis
-The following queries were created to analyze employee data:
-- Employee Data: Query to list employee number, last name, first name, sex, and salary.
-- Hiring Year Filter: Query to list employees hired in 1986.
-- Department Manager: Query to list the manager of each department with their employee and department details.
-- Employee-Department Assignment: Query to list employees and their corresponding departments.
-- Employee Name Search: Query to find employees with specific first and last names.
-- Department Employees: Query to list employees from the 'Sales' and 'Development' departments.
-- Last Name Frequency: Query to list how many employees share the same last name, sorted in descending order.
+📊 Data provided by edX Boot Camps LLC for educational purposes.
